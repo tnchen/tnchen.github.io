@@ -6,15 +6,15 @@
     <title>Tyler's Button Adventure</title>
 
 <body>
-<div class="center">
-    <p id="prompt">Click this button to generate your prompt.</p>
-</div>
-<div class="center">
-    <button onclick="updatePrompt()">Get new prompt!</button>
-</div>
+    <div class="center">
+        <p id="prompt">Click this button to generate your prompt.</p>
+    </div>
+    <div class="center">
+        <button onclick="updatePrompt()">Get new prompt!</button>
+    </div>
 
     <script>
-        const prompts = ["dog", "city", "woofwoofwoof", "1", "2", "3", "4"]
+        const prompts = ["Change the polygon color to [0.5, 0.2, 0.8]", "Move the coffee cup on top of the yellow block", "Rotate the Earth around", "Click on the buttons with raycast", "Poke each button twice", "Play the piano with your pointer finger", "Throw one cube at another object"]
 
         function updatePrompt() {
             var randomPrompt = prompts[Math.floor(Math.random() * prompts.length)];
