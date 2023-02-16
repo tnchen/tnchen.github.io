@@ -6,12 +6,25 @@
     <title>Tyler's Button Adventure</title>
 
 <body>
+<div class="center">
+    <p id="prompt">Click this button to generate your prompt.</p>
+</div>
+<div class="center">
+    <button onclick="updatePrompt()">Get new prompt!</button>
+</div>
 
-<h2>Here's your first adventure</h2>
-<p>Click this button to refresh your prompt</p>
+    <script>
+        const prompts = ["dog", "city", "woofwoofwoof", "1", "2", "3", "4"]
 
-<button>Click me</button>
+        function updatePrompt() {
+            var randomPrompt = prompts[Math.floor(Math.random() * prompts.length)];
+            document.getElementById("prompt").innerHTML = randomPrompt;
+        }
 
+        const button = document.getElementById("new-prompt-button");
+        button.addEventListener("click", updatePrompt);
+
+    </script>
 </body>
 </html>
 
