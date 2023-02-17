@@ -92,7 +92,7 @@
                 clickInteractionSelection = clickInteractionsCaps[1];
             }
             
-            return `${clickInteractionSelection} ${numButtons} buttons in this order: ${order.join(', ')}`;
+            return `${clickInteractionSelection} ${numButtons} buttons in this order: ${order.join(', ')}.`;
         }
 
         function generatePinchSliderPrompt() {
@@ -118,8 +118,8 @@
             // Assemble click prompts
             const clickPrompts = [
                 buttonPrompt,
-                `On the left side, open the keyboard and type a ${keyboardTypes[randomIndex(keyboardTypes)]} about ${keyboardTopics[randomIndex(keyboardTopics)]} using a ${clickInteractionSelection}.`,
-                `Play ${pianoSongs[randomIndex(pianoSongs)]} on the piano using a ${clickInteractionSelection}.`,
+                `On the left side, open the keyboard and type a ${keyboardTypes[randomIndex(keyboardTypes)]} about ${keyboardTopics[randomIndex(keyboardTopics)]} using ${clickInteractionSelection}.`,
+                `Play ${pianoSongs[randomIndex(pianoSongs)]} on the piano using ${clickInteractionSelection}.`,
             ];
 
             // Assemble hold prompts
