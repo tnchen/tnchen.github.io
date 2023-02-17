@@ -55,15 +55,23 @@
             return `Create a stack of ${item1}, ${item2}, and ${item3}. Knock it over with the ${item4}`;
         }
 
+        function generateButtonPrompt() {
+
+        }
+
+        function generatePinchSliderPrompt() {
+            
+        }
+
         function updatePrompt() {
             const stackPrompt = generateStackPrompt();
             
             const promptOptions = [
-                // `Scroll the slate scroll ${scrollTimes[randomIndex(scrollTimes)]} times ${scrollDirections[randomIndex(scrollDirections)]} using a ${interactions[randomIndex(interactions)]}`,
-                // `Play ${pianoSongs[randomIndex(pianoSongs)]} on the piano using a ${interactions[randomIndex(interactions)]}`,
-                // `On the left side, open the keyboard and type a ${keyboardTypes[randomIndex(keyboardTypes)]} about ${keyboardTopics[randomIndex(keyboardTopics)]}`,
-                // `On the left side, using ${interactions[randomIndex(interactions)]}, ${manipulations[randomIndex(manipulations)]} the ${objects[randomIndex(objects)]} and drag it somewhere`,
-                // `Rotate the MRTK flattened bounding box by ${rotations[randomIndex(rotations)]} degrees ${rotationAxes[randomIndex(rotationAxes)]}, move it ${directions[randomIndex(directions1)]}, ${directions[randomIndex(directions2)]}, and ${directions[randomIndex(directions3)]}`,
+                `Scroll the slate scroll ${scrollTimes[randomIndex(scrollTimes)]} times ${scrollDirections[randomIndex(scrollDirections)]} using a ${interactions[randomIndex(interactions)]}`,
+                `Play ${pianoSongs[randomIndex(pianoSongs)]} on the piano using a ${interactions[randomIndex(interactions)]}`,
+                `On the left side, open the keyboard and type a ${keyboardTypes[randomIndex(keyboardTypes)]} about ${keyboardTopics[randomIndex(keyboardTopics)]}`,
+                `On the left side, using ${interactions[randomIndex(interactions)]}, ${manipulations[randomIndex(manipulations)]} the ${objects[randomIndex(objects)]} and drag it somewhere`,
+                `Rotate the MRTK flattened bounding box by ${rotations[randomIndex(rotations)]} degrees ${rotationAxes[randomIndex(rotationAxes)]}, move it ${directions[randomIndex(directions1)]}, ${directions[randomIndex(directions2)]}, and ${directions[randomIndex(directions3)]}`,
                 stackPrompt,
                 `Manipulation Interaction: rotate the ${rotatableItems[randomIndex(rotatableItems)]} to a new orientation, and place the ${nonRotatableItems[randomIndex(nonRotatableItems)]} ${positions[randomIndex(positions)]} it`,
                 `Manipulation Interaction: throw the ${items[randomIndex(items.slice(0, 4))]} at the ${items.slice(4,items.length)[randomIndex(items.slice(4,items.length))]}`,
