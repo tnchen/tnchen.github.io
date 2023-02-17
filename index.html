@@ -14,10 +14,62 @@
     </div>
 
     <script>
-        const prompts = ["Change the polygon color to [0.5, 0.2, 0.8]", "Move the coffee cup on top of the yellow block", "Rotate the Earth around", "Click on the buttons with raycast", "Poke each button twice", "Play the piano with your pointer finger", "Throw one cube at another object"]
+
+        /* Prompt variables */
+        const scrollTimes = [2, 3, 4, 5];
+        const scrollDirections = ['upwards', 'downwards'];
+        const interactions = ['raycast', 'poke'];
+        const pianoSongs = ['mary had a little lamb', 'hot cross buns', 'Umbrella by Rihanna'];
+        const keyboardTypes = ['question', 'fact', 'comment'];
+        const keyboardTopics = ['snakes', 'pandas', 'the sun', 'the star-nosed mole', 'Star Wars', 'Froot Loops', 'Shrek'];
+        const objects = ['Purple Tetrahedron', 'Cheese', 'Blue Soccerball', 'Mug in a Box'];
+        const rotations = [45, 90, 180];
+        const rotationAxes = ['horizontally', 'vertically', 'on both axes'];
+        const directions1 = ['up', 'down'];
+        const directions2 = ['left', 'right'];
+        const directions3 = ['closer', 'farther away'];
+        const manipulations = ['enlarge', 'shrink'];
+        const items = ['blue cube', 'yellow cube', 'coffee cup', 'lunar lander', 'Earth', 'blue soccer ball', 'yellow octahedron'];
+        const rotatableItems = ['coffee cup', 'lunar lander', 'Earth'];
+        const nonRotatableItems = ['blue cube', 'yellow cube', 'blue soccer ball', 'yellow octahedron'];
+        const positions = ['on top of', 'underneath'];
+        const randomIndex = (arr) => Math.floor(Math.random() * arr.length);
+
+        function generateStackPrompt() {
+
+            const item1 = items[Math.floor(Math.random() * items.length)];
+            let item2, item3, item4;
+            
+            do {
+                item2 = items[Math.floor(Math.random() * items.length)];
+            } while (item2 === item1);
+            
+            do {
+                item3 = items[Math.floor(Math.random() * items.length)];
+            } while (item3 === item1 || item3 === item2);
+
+            do {
+                item4 = items[Math.floor(Math.random() * items.length)];
+            } while (item4 === item1 || item4 === item2 || item4 === item3);
+            
+            return `Create a stack of ${item1}, ${item2}, and ${item3}. Knock it over with the ${item4}`;
+        }
 
         function updatePrompt() {
-            var randomPrompt = prompts[Math.floor(Math.random() * prompts.length)];
+            const stackPrompt = generateStackPrompt();
+            
+            const promptOptions = [
+                // `Scroll the slate scroll ${scrollTimes[randomIndex(scrollTimes)]} times ${scrollDirections[randomIndex(scrollDirections)]} using a ${interactions[randomIndex(interactions)]}`,
+                // `Play ${pianoSongs[randomIndex(pianoSongs)]} on the piano using a ${interactions[randomIndex(interactions)]}`,
+                // `On the left side, open the keyboard and type a ${keyboardTypes[randomIndex(keyboardTypes)]} about ${keyboardTopics[randomIndex(keyboardTopics)]}`,
+                // `On the left side, using ${interactions[randomIndex(interactions)]}, ${manipulations[randomIndex(manipulations)]} the ${objects[randomIndex(objects)]} and drag it somewhere`,
+                // `Rotate the MRTK flattened bounding box by ${rotations[randomIndex(rotations)]} degrees ${rotationAxes[randomIndex(rotationAxes)]}, move it ${directions[randomIndex(directions1)]}, ${directions[randomIndex(directions2)]}, and ${directions[randomIndex(directions3)]}`,
+                stackPrompt,
+                `Manipulation Interaction: rotate the ${rotatableItems[randomIndex(rotatableItems)]} to a new orientation, and place the ${nonRotatableItems[randomIndex(nonRotatableItems)]} ${positions[randomIndex(positions)]} it`,
+                `Manipulation Interaction: throw the ${items[randomIndex(items.slice(0, 4))]} at the ${items.slice(4,items.length)[randomIndex(items.slice(4,items.length))]}`,
+            ];
+
+            var randomPrompt = promptOptions[randomIndex(promptOptions)];
             document.getElementById("prompt").innerHTML = randomPrompt;
         }
 
