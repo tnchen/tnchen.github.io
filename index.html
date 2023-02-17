@@ -16,14 +16,17 @@
     <script>
 
         /* Prompt variables */
-        const scrollTimes = [2, 3, 4, 5];
+        const scrollTimes = ['2', '3', '4', '5'];
         const scrollDirections = ['upwards', 'downwards'];
-        const interactions = ['raycast', 'poke'];
-        const pianoSongs = ['mary had a little lamb', 'hot cross buns', 'Umbrella by Rihanna'];
+        const holdInteractionsCaps = ['Raycast-click', 'Pinch'];
+        const holdInteractions = ['raycast-click', 'pinch'];
+        const clickInteractionsCaps = ['Raycast-click', 'Poke'];
+        const clickInteractions = ['raycast-click', 'poke'];
+        const pianoSongs = ['Mary Had a Little Lamb', 'Hot Cross Buns', 'Umbrella by Rihanna'];
         const keyboardTypes = ['question', 'fact', 'comment'];
         const keyboardTopics = ['snakes', 'pandas', 'the sun', 'the star-nosed mole', 'Star Wars', 'Froot Loops', 'Shrek'];
-        const objects = ['Purple Tetrahedron', 'Cheese', 'Blue Soccerball', 'Mug in a Box'];
-        const rotations = [45, 90, 180];
+        const objects = ['purple tetrahedron', 'cheese', 'blue soccerball', 'mug in a box'];
+        const rotations = ['45', '90', '180'];
         const rotationAxes = ['horizontally', 'vertically', 'on both axes'];
         const directions1 = ['up', 'down'];
         const directions2 = ['left', 'right'];
@@ -35,6 +38,7 @@
         const positions = ['on top of', 'underneath'];
         const randomIndex = (arr) => Math.floor(Math.random() * arr.length);
 
+        /* Prompt for stacking objects */
         function generateStackPrompt() {
 
             const item1 = items[Math.floor(Math.random() * items.length)];
@@ -52,33 +56,95 @@
                 item4 = items[Math.floor(Math.random() * items.length)];
             } while (item4 === item1 || item4 === item2 || item4 === item3);
             
-            return `Create a stack of ${item1}, ${item2}, and ${item3}. Knock it over with the ${item4}`;
+            return `Create a stack of ${item1}, ${item2}, and ${item3}. Knock it over with the ${item4}.`;
         }
 
-        function generateButtonPrompt() {
+        /* Prompt for clicking buttons */
+        function generateButtonClickPrompt() {
+            const items = ['search', 'refresh', 'comment', 'check', 'mic', 'star', 'plus', 'pin', 'camera', 'left blue button', 'middle blue button', 'right blue button'];
+            const numButtons = Math.floor(Math.random() * 3) + 3;
+            let prevItem, prevPrevItem, item, order = [];
+            
+            for (let i = 0; i < numButtons; i++) {
+                const rand = Math.random();
+                
+                if (i === 0) {
+                item = items[Math.floor(Math.random() * items.length)];
+                } else if (rand < 0.2) {
+                item = prevItem;
+                } else if ((rand < 0.5) && (i > 1)) {
+                item = prevPrevItem;
+                } else {
+                item = items[Math.floor(Math.random() * items.length)];
+                }
+                
+                order.push(item);
+                prevPrevItem = prevItem;
+                prevItem = item;
+            }
 
+            // For click prompts, do raycast 75% of the time, poke 25%.
+            var clickInteractionSelection;
+            const rand = Math.random();
+            if (rand < 0.75) {
+                clickInteractionSelection = clickInteractionsCaps[0];
+            } else {
+                clickInteractionSelection = clickInteractionsCaps[1];
+            }
+            
+            return `${clickInteractionSelection} ${numButtons} buttons in this order: ${order.join(', ')}`;
         }
 
         function generatePinchSliderPrompt() {
-            
+
+            return `${holdInteractionsCaps[randomIndex(holdInteractionsCaps)]} the pinch sliders on the colored polygon to: Red [${Math.random().toFixed(2).toString()}], Green [${Math.random().toFixed(2).toString()}], and Blue [${Math.random().toFixed(2).toString()}]`;
+        
         }
 
         function updatePrompt() {
             const stackPrompt = generateStackPrompt();
+            const buttonPrompt = generateButtonClickPrompt();
+            const pinchSliderPrompt = generatePinchSliderPrompt();
+
+            // For click prompts, do raycast 75% of the time, poke 25%.
+            var clickInteractionSelection;
+            var rand = Math.random();
+            if (rand < 0.75) {
+                clickInteractionSelection = clickInteractions[0];
+            } else {
+                clickInteractionSelection = clickInteractions[1];
+            }
             
-            const promptOptions = [
-                `Scroll the slate scroll ${scrollTimes[randomIndex(scrollTimes)]} times ${scrollDirections[randomIndex(scrollDirections)]} using a ${interactions[randomIndex(interactions)]}`,
-                `Play ${pianoSongs[randomIndex(pianoSongs)]} on the piano using a ${interactions[randomIndex(interactions)]}`,
-                `On the left side, open the keyboard and type a ${keyboardTypes[randomIndex(keyboardTypes)]} about ${keyboardTopics[randomIndex(keyboardTopics)]}`,
-                `On the left side, using ${interactions[randomIndex(interactions)]}, ${manipulations[randomIndex(manipulations)]} the ${objects[randomIndex(objects)]} and drag it somewhere`,
-                `Rotate the MRTK flattened bounding box by ${rotations[randomIndex(rotations)]} degrees ${rotationAxes[randomIndex(rotationAxes)]}, move it ${directions[randomIndex(directions1)]}, ${directions[randomIndex(directions2)]}, and ${directions[randomIndex(directions3)]}`,
-                stackPrompt,
-                `Manipulation Interaction: rotate the ${rotatableItems[randomIndex(rotatableItems)]} to a new orientation, and place the ${nonRotatableItems[randomIndex(nonRotatableItems)]} ${positions[randomIndex(positions)]} it`,
-                `Manipulation Interaction: throw the ${items[randomIndex(items.slice(0, 4))]} at the ${items.slice(4,items.length)[randomIndex(items.slice(4,items.length))]}`,
+            // Assemble click prompts
+            const clickPrompts = [
+                buttonPrompt,
+                `On the left side, open the keyboard and type a ${keyboardTypes[randomIndex(keyboardTypes)]} about ${keyboardTopics[randomIndex(keyboardTopics)]} using a ${clickInteractionSelection}.`,
+                `Play ${pianoSongs[randomIndex(pianoSongs)]} on the piano using a ${clickInteractionSelection}.`,
             ];
 
-            var randomPrompt = promptOptions[randomIndex(promptOptions)];
+            // Assemble hold prompts
+            const holdPrompts = [
+                pinchSliderPrompt,
+                stackPrompt,
+                `Rotate the ${rotatableItems[randomIndex(rotatableItems)]} to a new orientation, and place the ${nonRotatableItems[randomIndex(nonRotatableItems)]} ${positions[randomIndex(positions)]} it.`,
+                `Throw the ${items[randomIndex(items.slice(0, 4))]} at the ${items.slice(4,items.length)[randomIndex(items.slice(4,items.length))]}.`,
+                `Scroll the slate scroll ${scrollTimes[randomIndex(scrollTimes)]} times ${scrollDirections[randomIndex(scrollDirections)]} using a ${clickInteractions[randomIndex(clickInteractions)]}.`,
+                `On the left side, using ${holdInteractions[randomIndex(holdInteractions)]}, ${manipulations[randomIndex(manipulations)]} the ${objects[randomIndex(objects)]} and drag it somewhere.`,
+                `Rotate the MRTK flattened bounding box by ${rotations[randomIndex(rotations)]} degrees ${rotationAxes[randomIndex(rotationAxes)]}, then move it ${directions1[randomIndex(directions1)]}, ${directions2[randomIndex(directions2)]}, and ${directions3[randomIndex(directions3)]}.`,
+            ];
+
+            // Choose between click and Hold prompts
+            rand = Math.random();
+            var randomPrompt;
+            if (rand > 0.5) {
+                randomPrompt = clickPrompts[randomIndex(clickPrompts)];
+            } else {
+                randomPrompt = holdPrompts[randomIndex(holdPrompts)];
+            }
+
+            // Choose and print final prompt
             document.getElementById("prompt").innerHTML = randomPrompt;
+            return;
         }
 
         const button = document.getElementById("new-prompt-button");
