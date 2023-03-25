@@ -15,8 +15,68 @@ p2 {
     padding: 50px 250px;
 }
 
-.center2 {
-    display: flex;
-    align-items: left;
-    justify-content: left;
+body {
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    margin: 0;
+    padding: 0;
+    background-color: #f2f2f2;
+}
+
+.container {
+max-width: 800px;
+margin: 0 auto;
+padding: 20px;
+box-sizing: border-box;
+}
+
+h1, p {
+margin-top: 0;
+}
+
+h1 button {
+margin-right: 20px;
+}
+
+.left-column {
+float: left;
+width: 30%;
+}
+
+.left-column p {
+font-size: 14px;
+}
+
+button {
+display: inline-block;
+padding: 10px;
+font-size: 16px;
+border-radius: 5px;
+background-color: #4CAF50; /* green for Start button */
+color: white;
+border: none;
+cursor: pointer;
+}
+
+button:hover {
+background-color: #3e8e41;
+}
+
+#stopButton {
+background-color: #f44336; /* red for Stop button */
+}
+
+#stopButton:hover {
+background-color: #d32f2f;
+}
+
+.prompt {
+clear: both;
+}
+
+@media screen and (max-width: 600px) {
+.container {
+    max-width: 100%;
+    padding: 10px;
+}
 }

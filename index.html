@@ -6,14 +6,18 @@
     <title>Tyler's Button Adventure</title>
 
 <body>
-    <div class="center2">
-        <p id="counter"></p>
+    <div class="container">
+        <div id="buttons">
+			<button id="startButton" onclick="startGenerating()">Start</button>
+			<button id="stopButton" style="display:none" onclick="stopGenerating()">Stop</button>
+		</div>
+        <div class="left-column">
+        <p><span id="counter"></span></p>
+        </div>
+        <div class="prompt">
+        <p id="prompt">Click "Start" to begin generating prompts every 15 seconds. Don't worry if you miss one! Just use these as a general guide.</p>
+        </div>
     </div>
-
-    <div class="center">
-        <p id="prompt">Prompts will autogenerate every 15 seconds. Don't worry if you miss one! Just use these as a general guide.</p>
-    </div>
-
 
     <script>
 
@@ -123,7 +127,6 @@
                 `Play ${pianoSongs[randomIndex(pianoSongs)]} on the piano using ${clickInteractionSelection}.`,
                 `Let your hand fall down to your side, then tap out the rhythm of ${pianoSongs[randomIndex(pianoSongs)]}.`,
                 `Let your hand fall down to your side, then tap ${Math.floor(Math.random()) * 4 + 3} times.`,
-                `Take a 15 second rest!`,
             ];
 
             // Assemble hold prompts
@@ -137,13 +140,15 @@
                 `Rotate the MRTK flattened bounding box by ${rotations[randomIndex(rotations)]} degrees ${rotationAxes[randomIndex(rotationAxes)]}, then move it ${directions1[randomIndex(directions1)]}, ${directions2[randomIndex(directions2)]}, and ${directions3[randomIndex(directions3)]}.`,
             ];
 
-            // Choose between click and Hold prompts
+            // Choose between click, Hold, and rest prompts
             rand = Math.random();
             var randomPrompt;
             if (rand > 0.5) {
                 randomPrompt = clickPrompts[randomIndex(clickPrompts)];
-            } else {
+            } else if (rand > 0.05) {
                 randomPrompt = holdPrompts[randomIndex(holdPrompts)];
+            } else {
+                randomPrompt = `Take a 15 second rest!`;
             }
 
             // Choose and print final prompt
@@ -153,10 +158,60 @@
             return;
         }
 
-        setInterval(updatePrompt, 15000);
+        function startGenerating() {
+			intervalId = setInterval(updatePrompt, 2000);
+			document.getElementById("prompt").innerHTML = "Generating prompts...";
+			document.getElementById("counter").innerHTML = "Prompts generated: 0";
+			document.getElementById("startButton").style.display = "none";
+			document.getElementById("stopButton").style.display = "block";
+		}
+
+		function stopGenerating() {
+			clearInterval(intervalId);
+			document.getElementById("prompt").innerHTML = "Prompt generation stopped.";
+			document.getElementById("startButton").style.display = "block";
+			document.getElementById("stopButton").style.display = "none";
+            counter = 0;
+		}
 
     </script>
+
+<!-- <!DOCTYPE html>
+<html>
+    <meta charset='utf-8' />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="./styles/index.css" rel="stylesheet">
+    <title>Tyler's Button Adventure</title>
+
+<body>
+    <div class="container">
+        <div id="buttons">
+			<button id="startButton" onclick="startGenerating()">Start</button>
+			<button id="stopButton" style="display:none" onclick="stopGenerating()">Stop</button>
+		</div>
+        <div class="left-column">
+        <p><span id="counter">0</span></p>
+        </div>
+        <div class="prompt">
+        <p id="prompt">Click "Start" to generate a prompt.</p>
+        </div>
+    </div>
+      
+
+	<script>
+		var prompts = [
+			"What is your favorite book and why?",
+			"If you could go back in time, what era would you visit and why?",
+			"What is your proudest achievement and why?",
+			"What is something you're afraid of and why?",
+			"What is your favorite food and why?"
+		];
+		var counter = 0;
+		var intervalId;
+
+
+
+	</script> -->
+
 </body>
 </html>
-
-
