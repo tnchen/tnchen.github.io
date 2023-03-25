@@ -6,23 +6,26 @@
     <title>Tyler's Button Adventure</title>
 
 <body>
-    <div class="center">
-        <p id="prompt">Click this button to generate your prompt.</p>
+    <div class="center2">
+        <p id="counter"></p>
     </div>
+
     <div class="center">
-        <button onclick="updatePrompt()">Get new prompt!</button>
+        <p id="prompt">Prompts will autogenerate every 15 seconds. Don't worry if you miss one! Just use these as a general guide.</p>
     </div>
+
 
     <script>
 
         /* Prompt variables */
+        var counter = 0;
         const scrollTimes = ['2', '3', '4', '5'];
         const scrollDirections = ['upwards', 'downwards'];
         const holdInteractionsCaps = ['Raycast-click', 'Pinch'];
         const holdInteractions = ['raycast-click', 'pinch'];
         const clickInteractionsCaps = ['Raycast-click', 'Poke'];
         const clickInteractions = ['raycast-click', 'poke'];
-        const pianoSongs = ['Mary Had a Little Lamb', 'Hot Cross Buns', 'The Alphabet Song', 'I`m Loving It (the McDonalds jingle)', 'Umbrella by Rihanna', 'It`s a Small World', 'We Will Rock You', 'a C major scale', 'a chromatic scale'];
+        const pianoSongs = ['Mary Had a Little Lamb', 'Hot Cross Buns', 'The Alphabet Song', 'I`m Loving It (the McDonalds jingle)', 'It`s a Small World', 'We Will Rock You', 'a C major scale', 'a chromatic scale', 'Billie Jean', 'Yellow Submarine', 'Dancing Queen'];
         const keyboardTypes = ['question', 'fact', 'comment'];
         const keyboardTopics = ['snakes', 'pandas', 'the sun', 'the star-nosed mole', 'Star Wars', 'Froot Loops', 'Shrek', 'Rihanna', 'YouTube', 'genetics', 'Skywalk', 'fashion', 'Wikipedia', 'diarrhea remedies', 'Guinness World Records', 'the Olympics', 'Naruto', 'KFC', 'pelicans'];
         const objects = ['purple tetrahedron', 'cheese', 'blue soccerball', 'mug in a box'];
@@ -32,9 +35,9 @@
         const directions2 = ['left', 'right'];
         const directions3 = ['closer', 'farther away'];
         const manipulations = ['enlarge', 'shrink'];
-        const items = ['blue cube', 'yellow cube', 'coffee cup', 'lunar lander', 'Earth', 'blue soccer ball', 'yellow octahedron'];
+        const items = ['coffee cup', 'lunar lander', 'Earth', 'blue soccer ball', 'yellow octahedron'];
         const rotatableItems = ['coffee cup', 'lunar lander', 'Earth'];
-        const nonRotatableItems = ['blue cube', 'yellow cube', 'blue soccer ball', 'yellow octahedron'];
+        const nonRotatableItems = ['blue soccer ball', 'yellow octahedron'];
         const positions = ['on top of', 'underneath'];
         const randomIndex = (arr) => Math.floor(Math.random() * arr.length);
 
@@ -52,11 +55,8 @@
                 item3 = items[Math.floor(Math.random() * items.length)];
             } while (item3 === item1 || item3 === item2);
 
-            do {
-                item4 = items[Math.floor(Math.random() * items.length)];
-            } while (item4 === item1 || item4 === item2 || item4 === item3);
             
-            return `Create a stack of ${item1}, ${item2}, and ${item3}. Knock it over with the ${item4}.`;
+            return `Create a stack of ${item1}, ${item2}, and ${item3}.`;
         }
 
         /* Prompt for clicking buttons */
@@ -102,6 +102,7 @@
         }
 
         function updatePrompt() {
+            counter++;
             const stackPrompt = generateStackPrompt();
             const buttonPrompt = generateButtonClickPrompt();
             const pinchSliderPrompt = generatePinchSliderPrompt();
@@ -120,6 +121,9 @@
                 buttonPrompt,
                 // `On the left side, open the keyboard and type a ${keyboardTypes[randomIndex(keyboardTypes)]} about ${keyboardTopics[randomIndex(keyboardTopics)]} using ${clickInteractionSelection}.`, # Disabled until keyboard works
                 `Play ${pianoSongs[randomIndex(pianoSongs)]} on the piano using ${clickInteractionSelection}.`,
+                `Let your hand fall down to your side, then tap out the rhythm of ${pianoSongs[randomIndex(pianoSongs)]}.`,
+                `Let your hand fall down to your side, then tap ${Math.floor(Math.random()) * 4 + 3} times.`,
+                `Take a 15 second rest!`,
             ];
 
             // Assemble hold prompts
@@ -144,11 +148,12 @@
 
             // Choose and print final prompt
             document.getElementById("prompt").innerHTML = randomPrompt;
+            // Update counter
+            document.getElementById("counter").innerHTML = "Prompts generated: " + counter;
             return;
         }
 
-        const button = document.getElementById("new-prompt-button");
-        button.addEventListener("click", updatePrompt);
+        setInterval(updatePrompt, 15000);
 
     </script>
 </body>
